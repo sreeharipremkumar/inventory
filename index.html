@@ -653,7 +653,7 @@
 
         // ========== API FUNCTIONS ==========
         async function fetchInventory() {
-            if (API_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+            if (API_URL === 'https://script.google.com/macros/s/AKfycbwPpZvJQB4a3HzW_agwNRSpRdSbfPvSoR273nYBOauLOzqSC44BxhaJ9GFkXLXtVBkx/exec') {
                 // Demo mode - use localStorage
                 updateConnectionStatus('offline', 'Demo Mode - Local Storage Only');
                 return loadFromLocalStorage();
@@ -683,7 +683,7 @@
         }
 
         async function saveToServer(schoolId, kit, partId, field, value) {
-            if (API_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+            if (API_URL === 'https://script.google.com/macros/s/AKfycbwPpZvJQB4a3HzW_agwNRSpRdSbfPvSoR273nYBOauLOzqSC44BxhaJ9GFkXLXtVBkx/exec') {
                 // Demo mode - use localStorage
                 saveToLocalStorage(schoolId, kit, partId, field, value);
                 showSaveIndicator('saved');
