@@ -653,11 +653,11 @@
 
         // ========== API FUNCTIONS ==========
         async function fetchInventory() {
-            if (API_URL === 'https://script.google.com/macros/s/AKfycbwPpZvJQB4a3HzW_agwNRSpRdSbfPvSoR273nYBOauLOzqSC44BxhaJ9GFkXLXtVBkx/exec') {
-                // Demo mode - use localStorage
-                updateConnectionStatus('offline', 'Demo Mode - Local Storage Only');
-                return loadFromLocalStorage();
-            }
+            // if (API_URL === 'https://script.google.com/macros/s/AKfycbwPpZvJQB4a3HzW_agwNRSpRdSbfPvSoR273nYBOauLOzqSC44BxhaJ9GFkXLXtVBkx/exec') {
+            //     // Demo mode - use localStorage
+            //     updateConnectionStatus('offline', 'Demo Mode - Local Storage Only');
+            //     return loadFromLocalStorage();
+            // }
             
             try {
                 const response = await fetch(API_URL);
@@ -683,12 +683,12 @@
         }
 
         async function saveToServer(schoolId, kit, partId, field, value) {
-            if (API_URL === 'https://script.google.com/macros/s/AKfycbwPpZvJQB4a3HzW_agwNRSpRdSbfPvSoR273nYBOauLOzqSC44BxhaJ9GFkXLXtVBkx/exec') {
-                // Demo mode - use localStorage
-                saveToLocalStorage(schoolId, kit, partId, field, value);
-                showSaveIndicator('saved');
-                return;
-            }
+            // if (API_URL === 'https://script.google.com/macros/s/AKfycbwPpZvJQB4a3HzW_agwNRSpRdSbfPvSoR273nYBOauLOzqSC44BxhaJ9GFkXLXtVBkx/exec') {
+            //     // Demo mode - use localStorage
+            //     saveToLocalStorage(schoolId, kit, partId, field, value);
+            //     showSaveIndicator('saved');
+            //     return;
+            // }
 
             showSaveIndicator('saving');
             
