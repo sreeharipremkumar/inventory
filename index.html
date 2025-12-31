@@ -653,11 +653,11 @@
 
         // ========== API FUNCTIONS ==========
         async function fetchInventory() {
-            // if (API_URL === 'https://script.google.com/macros/s/AKfycbwPpZvJQB4a3HzW_agwNRSpRdSbfPvSoR273nYBOauLOzqSC44BxhaJ9GFkXLXtVBkx/exec') {
-            //     // Demo mode - use localStorage
-            //     updateConnectionStatus('offline', 'Demo Mode - Local Storage Only');
-            //     return loadFromLocalStorage();
-            // }
+            if (API_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                // Demo mode - use localStorage
+                updateConnectionStatus('offline', 'Demo Mode - Local Storage Only');
+                return loadFromLocalStorage();
+            }
             
             try {
                 const response = await fetch(API_URL);
@@ -683,15 +683,19 @@
         }
 
         async function saveToServer(schoolId, kit, partId, field, value) {
+            if (API_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                // Demo mode - use localStorage
+                saveToLocalStorage(schoolId, kit, partId, field, value);
+                showSaveIndicator('saved');
+                return;
+            }
+
             showSaveIndicator('saving');
-        
+            
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    mode: 'cors',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         school_id: schoolId,
                         kit: kit,
@@ -701,30 +705,26 @@
                         user: currentUser
                     })
                 });
-        
+                
                 const result = await response.json();
-        
-                if (!result.success) {
-                    throw new Error(result.error || 'Unknown server error');
+                
+                if (result.success) {
+                    // Update local cache
+                    const key = `${schoolId}_kit${kit}_${partId}`;
+                    if (!inventoryCache[key]) {
+                        inventoryCache[key] = { school_id: schoolId, kit, part_id: partId, start: '', end: '' };
+                    }
+                    inventoryCache[key][field] = value;
+                    localStorage.setItem('inventory_cache', JSON.stringify(inventoryCache));
+                    
+                    showSaveIndicator('saved');
+                    isOnline = true;
+                } else {
+                    throw new Error(result.error);
                 }
-        
-                const key = `${schoolId}_kit${kit}_${partId}`;
-                inventoryCache[key] ??= {
-                    school_id: schoolId,
-                    kit,
-                    part_id: partId,
-                    start: '',
-                    end: ''
-                };
-        
-                inventoryCache[key][field] = value;
-                localStorage.setItem('inventory_cache', JSON.stringify(inventoryCache));
-        
-                showSaveIndicator('saved');
-                isOnline = true;
-        
             } catch (error) {
                 console.error('Save error:', error);
+                // Save to localStorage as fallback
                 saveToLocalStorage(schoolId, kit, partId, field, value);
                 showSaveIndicator('offline');
                 isOnline = false;
